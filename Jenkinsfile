@@ -14,10 +14,10 @@ pipeline {
     TEST_RESULTS     = 'test-results'
 
     // SonarQube variables
-    SONARQUBE_SERVER = 'SonarQubeServer'   // Jenkins SonarQube server name
-    SONARQUBE_SCANNER = 'SonarQubeScanner' // Jenkins SonarQube scanner tool name
-    SONAR_HOST_URL   = 'https://sonarqube.yourcompany.com' // Replace with your SonarQube URL
-    SONAR_AUTH_TOKEN = credentials('sonarqube-token') // Jenkins credential ID for token
+    //SONARQUBE_SERVER = 'SonarQubeServer'   // Jenkins SonarQube server name
+    //SONARQUBE_SCANNER = 'SonarQubeScanner' // Jenkins SonarQube scanner tool name
+    //SONAR_HOST_URL   = 'https://sonarqube.yourcompany.com' // Replace with your SonarQube URL
+    //SONAR_AUTH_TOKEN = credentials('sonarqube-token') // Jenkins credential ID for token
   }
 
   options {
@@ -54,7 +54,7 @@ pipeline {
     }
 
     //  SonarQube Analysis
-    stage('SonarQube Analysis') {
+    /*stage('SonarQube Analysis') {
       environment {
         SCANNER_HOME = tool "${SONARQUBE_SCANNER}"
       }
@@ -91,7 +91,7 @@ pipeline {
         }
       }
     }
-
+*/
     stage('Build Docker Image') {
       steps {
         script {
