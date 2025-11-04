@@ -1,4 +1,4 @@
-pipeline { 
+pipeline {
   agent any
 
   environment {
@@ -12,12 +12,6 @@ pipeline {
     GIT_CREDENTIALS  = 'github-ssh'
     AWS_CREDENTIALS  = 'aws-creds'
     TEST_RESULTS     = 'test-results'
-
-    // SonarQube variables
-    //SONARQUBE_SERVER = 'SonarQubeServer'   // Jenkins SonarQube server name
-    //SONARQUBE_SCANNER = 'SonarQubeScanner' // Jenkins SonarQube scanner tool name
-    //SONAR_HOST_URL   = 'https://sonarqube.yourcompany.com' // Replace with your SonarQube URL
-    //SONAR_AUTH_TOKEN = credentials('sonarqube-token') // Jenkins credential ID for token
   }
 
   options {
@@ -27,6 +21,7 @@ pipeline {
   }
 
   stages {
+
     stage('Checkout') {
       steps {
         checkout([
@@ -52,46 +47,6 @@ pipeline {
         junit "${TEST_RESULTS}/unit-tests.xml"
       }
     }
-
-    //  SonarQube Analysis
-    /*stage('SonarQube Analysis') {
-      environment {
-        SCANNER_HOME = tool "${SONARQUBE_SCANNER}"
-      }
-      steps {
-        withSonarQubeEnv("${SONARQUBE_SERVER}") {
-          script {
-            sh """
-              ${SCANNER_HOME}/bin/sonar-scanner \
-                -Dsonar.projectKey=${ECR_REPO_NAME} \
-                -Dsonar.projectName=${ECR_REPO_NAME} \
-                -Dsonar.projectVersion=${BUILD_ID} \
-                -Dsonar.sources=. \
-                -Dsonar.host.url=${SONAR_HOST_URL} \
-                -Dsonar.login=${SONAR_AUTH_TOKEN}
-            """
-          }
-        }
-      }
-      post {
-        success {
-          echo 'SonarQube analysis completed successfully.'
-        }
-        failure {
-          echo 'SonarQube analysis failed.'
-        }
-      }
-    }
-
-    // Optional — wait for SonarQube Quality Gate
-    stage('Quality Gate') {
-      steps {
-        timeout(time: 5, unit: 'MINUTES') {
-          waitForQualityGate abortPipeline: true
-        }
-      }
-    }
-    */
 
     stage('Build Docker Image') {
       steps {
@@ -164,10 +119,10 @@ pipeline {
 
   post {
     success {
-      echo "Deployment success: ${IMAGE_URI}"
+      echo "✅ Deployment successful: ${IMAGE_URI}"
     }
     failure {
-      echo "Pipeline failed — check console and test reports."
+      echo "❌ Pipeline failed — check console output and test reports."
     }
   }
 }
